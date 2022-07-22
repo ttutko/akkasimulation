@@ -1,4 +1,10 @@
 ﻿@page "/counter"
+@using Akka.Actor
+@using Akka.Hosting
+@using akkaservice
+@using akkasimulator.Data
+@inject ActorRegistry registry
+@inject ActorSystem actorSystem
 
 <PageTitle>Counter</PageTitle>
 
@@ -8,11 +14,35 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
+<button class="btn" @onclick="PrintHierarchy">Print</button>
+
+<EditForm Model="@createInstanceModel" OnValidSubmit="@AddInstance">
+    <InputText id="instanceName" @bind-Value="createInstanceModel.Name" />
+    <button class="btn" type="submit">Add</button>
+</EditForm>
+
 @code {
     private int currentCount = 0;
+    private CreateInstanceModel createInstanceModel = new();
 
     private void IncrementCount()
     {
         currentCount++;
+    }
+
+    private void AddInstance()
+    {
+        var coordinator = registry.Get<InstanceCoordinatorActor>();
+        coordinator.Tell(new CreateInstanceMessage(createInstanceModel.Name), ActorRefs.Nobody);
+    }
+
+    private void PrintHierarchy()
+    {
+        var coordinator = registry.Get<InstanceCoordinatorActor>();
+        
+        //foreach(var child in )
+        //{
+        //    Console.WriteLine(child.Path);
+        //}
     }
 }

@@ -1,11 +1,29 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using akkasimulator.Data;
+using Akka.Hosting;
+using akkaservice;
+using Akka.Actor;
+using Petabridge.Cmd.Host;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddAkka("akkasimulation", configurationBuilder =>
+{
+    configurationBuilder
+        .AddPetabridgeCmd(cmd =>
+        {
+            
+        })
+        .WithActors((system, registry) =>
+        {
+            var instanceCoordinator = system.ActorOf(Props.Create(() => new InstanceCoordinatorActor()), "InstanceCoordinator");
+            registry.Register<InstanceCoordinatorActor>(instanceCoordinator);
+        });
+});
+
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 

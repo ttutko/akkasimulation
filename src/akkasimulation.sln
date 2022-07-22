@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "akkasimulator", "akkasimulator\akkasimulator.csproj", "{2FA92058-01DB-4974-A4F9-46A8CC6CDD02}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "akkaservice", "akkaservice\akkaservice.csproj", "{0F81D9B7-8911-490C-B7E4-F6E473A88498}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{2FA92058-01DB-4974-A4F9-46A8CC6CDD02}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FA92058-01DB-4974-A4F9-46A8CC6CDD02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FA92058-01DB-4974-A4F9-46A8CC6CDD02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F81D9B7-8911-490C-B7E4-F6E473A88498}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F81D9B7-8911-490C-B7E4-F6E473A88498}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F81D9B7-8911-490C-B7E4-F6E473A88498}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F81D9B7-8911-490C-B7E4-F6E473A88498}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

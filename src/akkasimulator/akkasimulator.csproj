@@ -6,4 +6,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Akka" Version="1.4.39" />
+    <PackageReference Include="Akka.DependencyInjection" Version="1.4.39" />
+    <PackageReference Include="Akka.Hosting" Version="0.4.1" />
+    <PackageReference Include="Petabridge.Cmd.Host" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\akkaservice\akkaservice.csproj" />
+  </ItemGroup>
+
 </Project>
