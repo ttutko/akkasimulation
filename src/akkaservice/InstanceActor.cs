@@ -20,6 +20,19 @@ namespace akkaservice
             {
                 log.Info("Instance {0} started.", Name);
             });
+
+            Receive<CommunicationMessage>(message =>
+            {
+                log.Info("Received Communication Message!");
+            });
+        }
+
+        protected override void PreStart()
+        {
+            // start two recurring timers
+            // both timers will be automatically disposed when actor is stopped
+            Context.System.Scheduler.ScheduleTellRepeatedlyCancelable(TimeSpan.FromSeconds(0.1),
+                TimeSpan.FromSeconds(5), Self, new CommunicationMessage(), ActorRefs.NoSender);
         }
 
         public static Props Props(string name)
