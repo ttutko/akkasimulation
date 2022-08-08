@@ -19,13 +19,16 @@ builder.Services.AddAkka("akkasimulation", configurationBuilder =>
         })
         .WithActors((system, registry) =>
         {
-            var instanceCoordinator = system.ActorOf(Props.Create(() => new InstanceCoordinatorActor()), "InstanceCoordinator");
+            var instanceCoordinator = system.ActorOf(Props.Create(() => new InstanceCoordinatorActor(builder.Services.)), "InstanceCoordinator");
             registry.Register<InstanceCoordinatorActor>(instanceCoordinator);
         });
 });
 
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddSingleton<IModule, Module100>();
+builder.Services.AddSingleton<IModule, Module200>();
+builder.Services.AddSingleton<IModule, Module300>();
 
 var app = builder.Build();
 

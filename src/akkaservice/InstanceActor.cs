@@ -12,6 +12,8 @@ namespace akkaservice
     {
         private readonly ILoggingAdapter log = Context.GetLogger();
         public string Name { get; private set; }
+        
+        
         public InstanceActor(string name)
         {
             Name = name;
