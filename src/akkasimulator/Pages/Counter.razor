@@ -33,7 +33,8 @@
     private void AddInstance()
     {
         var coordinator = registry.Get<InstanceCoordinatorActor>();
-        coordinator.Tell(new CreateInstanceMessage(createInstanceModel.Name), ActorRefs.Nobody);
+        string config = "{\"modules\": [ { \"type\": \"ModuleA\", \"config\": { \"config1\": \"Test config value\", \"config2\": 1 }}]}";
+        coordinator.Tell(new CreateInstanceMessage(createInstanceModel.Name, config), ActorRefs.Nobody);
     }
 
     private void PrintHierarchy()

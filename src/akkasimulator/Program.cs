@@ -5,12 +5,13 @@ using Akka.Hosting;
 using akkaservice;
 using Akka.Actor;
 using Petabridge.Cmd.Host;
+using Akka.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddAkka("akkasimulation", configurationBuilder =>
+builder.Services.AddAkka("akkasimulation", (configurationBuilder, provider) =>
 {
     configurationBuilder
         .AddPetabridgeCmd(cmd =>
@@ -19,7 +20,7 @@ builder.Services.AddAkka("akkasimulation", configurationBuilder =>
         })
         .WithActors((system, registry) =>
         {
-            var instanceCoordinator = system.ActorOf(Props.Create(() => new InstanceCoordinatorActor()), "InstanceCoordinator");
+            var instanceCoordinator = system.ActorOf(Props.Create(() => new InstanceCoordinatorActor(provider)), "InstanceCoordinator");
             registry.Register<InstanceCoordinatorActor>(instanceCoordinator);
         });
 });
