@@ -27,6 +27,7 @@ builder.Services.AddAkka("akkasimulation", (configurationBuilder, provider) =>
 
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddSingleton<ModuleFactory>();
 
 var app = builder.Build();
 

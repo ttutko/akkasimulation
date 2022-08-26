@@ -14,15 +14,19 @@ namespace akkaservice
     public class InstanceActor : ReceiveActor
     {
         private readonly ILoggingAdapter log = Context.GetLogger();
-        private Dictionary<string, ModuleActor> _installedModules = new Dictionary<string, ModuleActor>();
+        private Dictionary<string, IActorRef> _installedModules = new Dictionary<string, IActorRef>();
         public string Name { get; private set; }
+        private readonly ModuleFactory factory;
+        private readonly IServiceProvider sp;
 
         private readonly string _initialConfig;
 
-        public InstanceActor(string name, string initialConfiguration)
+        public InstanceActor(string name, string initialConfiguration, ModuleFactory factory, IServiceProvider sp)
         {
             Name = name;
             _initialConfig = initialConfiguration;
+            this.factory = factory;
+            this.sp = sp;
 
             log.Info($"Initial configuration: {initialConfiguration}");
 
@@ -35,8 +39,6 @@ namespace akkaservice
             {
                 log.Info("Received Communication Message!");
             });
-
-
         }
 
         protected override void PreStart()
@@ -45,6 +47,18 @@ namespace akkaservice
             // both timers will be automatically disposed when actor is stopped
             Context.System.Scheduler.ScheduleTellRepeatedlyCancelable(TimeSpan.FromSeconds(0.1),
                 TimeSpan.FromSeconds(5), Self, new CommunicationMessage(), ActorRefs.NoSender);
+
+            using (JsonDocument document = JsonDocument.Parse(_initialConfig))
+            {
+                JsonElement root = document.RootElement;
+                JsonElement modules = root.GetProperty("modules");
+                foreach (JsonElement module in modules.EnumerateArray())
+                {
+                    var prop = factory.CreateModule(module.GetProperty("type").GetString(), module.GetProperty("config").GetRawText());
+                    var module_actor = Context.ActorOf(prop, module.GetProperty("type").GetString());
+                    _installedModules.Add(module.GetProperty("type").GetString(), module_actor);
+                }
+            }
         }
 
         public static Props Props(string name, string config)
