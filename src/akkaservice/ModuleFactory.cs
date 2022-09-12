@@ -18,6 +18,8 @@ public class ModuleFactory
         {
             case "ModuleA":
                 return Akka.Actor.Props.Create<ModuleAActor>(sp, config);
+            case "ModuleB":
+                return Akka.Actor.Props.Create<ModuleBActor>(sp, config);
             default:
                 return null;
         }

@@ -33,7 +33,7 @@
     private void AddInstance()
     {
         var coordinator = registry.Get<InstanceCoordinatorActor>();
-        string config = "{\"modules\": [ { \"type\": \"ModuleA\", \"config\": { \"config1\": \"Test config value\", \"config2\": 1 }}]}";
+        string config = "{\"modules\": [ { \"type\": \"ModuleA\", \"config\": { \"Config1\": \"Test config value\", \"Config2\": 1 }}, { \"type\": \"ModuleB\", \"config\": { \"SomeOtherConfig\": \"Test config B value\", \"SomeOtherConfig2\": \"TestOtherB Config\" }}]}";
         coordinator.Tell(new CreateInstanceMessage(createInstanceModel.Name, config), ActorRefs.Nobody);
     }
 
