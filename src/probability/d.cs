@@ -1,5 +1,4 @@
 public class D {
-    public int Id { get; set;}
-    public int LifeExpectancy {get; set;}
-    public bool IsDead {get; set;} = false;
+    public string Id {get; set;} = Guid.NewGuid().ToString().Replace("-","");
+    public List<Ci> Cis {get; set;} = new List<Ci>();
 }

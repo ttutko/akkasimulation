@@ -4,7 +4,9 @@ using System.Linq;
 using System.IO;
 
 var rng = new Random(1);
-List<D> active = new List<D>();
+List<Ci> active = new List<Ci>();
+List<D> dees = new List<D>();
+int total = 0;
 
 Dictionary<int, double> probs = new Dictionary<int, double>(365);
 
@@ -63,12 +65,26 @@ using (var file = new StreamWriter(fs))
 
         for (int id = 1; id <= numToCreate; id++)
         {
-            var newD = new D() { Id = (curId + id) };
+            D curD = null;
+
+            // 10% chance of being part of existing d
+            if(dees.Any() && rng.Next(1,100) >= 90)
+            {
+                curD = dees[rng.Next(dees.Count)];
+            }
+            else
+            {
+                curD = new D();
+                dees.Add(curD);
+            }
+            var newCi = new Ci() { Id = (curId + id) };
             var numMonths = categorical.Sample() + 1;
             var day = (numMonths - 1) * 30 + rng.Next(30);
-            newD.LifeExpectancy = curDay + day;
+            newCi.LifeExpectancy = curDay + day;
 
-            active.Add(newD);
+            active.Add(newCi);
+            curD.Cis.Add(newCi);
+            total++;
         }
 
         // Mark dead those that have exceeded their life expectancy
@@ -79,9 +95,18 @@ using (var file = new StreamWriter(fs))
             active.Remove(deadD);
         }
 
-        Console.WriteLine($"Day {curDay}: {numToCreate} created, {numDying} died, {active.Where(d => d.IsDead == false).Count()} active");
+        Console.WriteLine($"Day {curDay}: {dees.Count} dees, {numToCreate} created, {numDying} died, {active.Count()} active, {total} total");
         //Console.WriteLine($"{curDay},{active.Where(d => d.IsDead == false).Count()}");
         file.WriteLine($"{curDay},{active.Where(d => d.IsDead == false).Count()}");
+    }
+
+    foreach(var d in dees)
+    {
+        Console.WriteLine($"- {d.Id}");
+        foreach(var ci in d.Cis)
+        {
+            Console.WriteLine($"\t{ci.Id}");
+        }        
     }
 }
 
